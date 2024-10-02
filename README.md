@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="images/LOGO_mentalsupport.jpeg" alt="Mental Health Chatbot Logo" width="200"/>
+</p>
+
+<h1 align="center">Mental Health Chatbot</h1>
+
 # Mental Health Chatbot
 
 A simple web-based chatbot application focused on mental health support, built with Flask and Google's Generative AI.
