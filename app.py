@@ -60,7 +60,20 @@ if user_input:
     with st.chat_message("ai"):
         st.write(f"{timestamp}: {ai_response}")
 
-# Optional: Add a button to clear chat history
+#Add a button to clear chat history
 if st.button("Clear Chat History"):
     st.session_state.chat_history = []
     st.rerun()
+
+# Add some space before the footer
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# Add the footer
+st.markdown(
+    """
+    <footer style='text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;'>
+        <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
+    </footer>
+    """,
+    unsafe_allow_html=True
+)
