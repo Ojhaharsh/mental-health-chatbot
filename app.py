@@ -33,33 +33,36 @@ user_input = st.chat_input("What's on your mind?")
 
 if user_input:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
+       
     # Add user message to chat history
     st.session_state.chat_history.append({"role": "user", "content": user_input, "timestamp": timestamp})
-    
+       
     # Generate AI response using Gemini API
     model = genai.GenerativeModel('gemini-pro')
-    
+       
     prompt = (
-        f"Respond to the following user input: '{user_input}'\n"
-        "Provide a concise response with the following guidelines:\n"
-        "1. Start with a brief, empathetic acknowledgment.\n"
-        "2. Give 3 short, practical suggestions, each in 1-2 sentences.\n"
-        "3. Format the response with numbered points.\n"
-        "4. Add a brief reminder about seeking professional help if needed.\n"
-        "5. Keep the entire response friendly and under 150 words."
+        f"You are a mental health support chatbot. Respond to the following user input: '{user_input}'\n"
+        "Provide a concise, contextually appropriate response with the following guidelines:\n"
+        "1. Start with a brief, empathetic acknowledgment of the user's input.\n"
+        "2. If appropriate, give 1-2 short, practical suggestions related to the user's concern.\n"
+        "3. Keep the response friendly and under 50 words.\n"
+        "4. Only mention professional help if the user's message indicates severe distress."
     )
-    
+       
     response = model.generate_content(prompt)
     ai_response = response.text
-    
+       
     # Add AI response to chat history
     st.session_state.chat_history.append({"role": "ai", "content": ai_response, "timestamp": timestamp})
-    
+       
     # Display the AI response
     with st.chat_message("ai"):
         st.write(f"{timestamp}: {ai_response}")
 
+# Display chat history
+for message in st.session_state.chat_history:
+    with st.chat_message(message["role"]):
+        st.write(f"{message['timestamp']}: {message['content']}")
 #Add a button to clear chat history
 if st.button("Clear Chat History"):
     st.session_state.chat_history = []
@@ -70,10 +73,21 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Add the footer
 st.markdown(
-    """
-    <footer style='text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;'>
-        <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
-    </footer>
-    """,
-    unsafe_allow_html=True
-)
+       """
+       <style>
+       .footer {
+           position: fixed;
+           left: 0;
+           bottom: 0;
+           width: 100%;
+           background-color: white;
+           color: black;
+           text-align: center;
+       }
+       </style>
+       <div class="footer">
+           <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
+       </div>
+       """,
+       unsafe_allow_html=True
+   )
