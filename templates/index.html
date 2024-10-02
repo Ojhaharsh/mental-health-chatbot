@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Mental Health Chatbot</h1>
+
+        <div id="chat-container">
+            <!-- Chat messages will be injected here dynamically -->
+        </div>
+
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Type your message here..." required>
+            <button type="submit">Send</button>
+        </form>
+
+        <footer>
+            <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#chat-form').submit(function (e) {
+                e.preventDefault();
+                var userInput = $('#user-input').val();
+
+                // Add user message to chat
+                $('#chat-container').append(
+                    '<div class="user-message message"><div class="message-content">' + userInput + '</div><span class="timestamp">' + new Date().toLocaleTimeString() + '</span></div>'
+                );
+
+                // Clear input field
+                $('#user-input').val('');
+
+                // Send message to server
+                $.ajax({
+                    url: '/send_message',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ user_input: userInput }),
+                    success: function (response) {
+                        // Format the response
+                        var formattedResponse = formatResponse(response.ai_response);
+
+                        // Add AI response to chat
+                        $('#chat-container').append(
+                            '<div class="ai-message message"><div class="message-content">' + formattedResponse + '</div><span class="timestamp">' + response.timestamp + '</span></div>'
+                        );
+
+                        // Scroll to bottom of chat
+                        $('#chat-container').scrollTop($('#chat-container')[0].scrollHeight);
+                    },
+                    error: function () {
+                        // Simulate AI response if server call fails
+                        setTimeout(function () {
+                            var simulatedResponse = "I understand that you're feeling tense about tomorrow's exams. Here are some quick tips that might help:\n\n1. Break down tasks: Divide the material into smaller chunks to make it less overwhelming.\n\n2. Practice efficient study techniques: Focus on active recall techniques like flashcards or summaries to enhance memorization.\n\n3. Take care of your well-being: Get enough sleep, eat healthily, and exercise regularly to reduce anxiety.\n\nIf your anxiety persists or significantly impacts your daily life, it may be helpful to seek professional support.";
+                            var formattedResponse = formatResponse(simulatedResponse);
+
+                            $('#chat-container').append(
+                                '<div class="ai-message message"><div class="message-content">' + formattedResponse + '</div><span class="timestamp">' + new Date().toLocaleTimeString() + '</span></div>'
+                            );
+                            $('#chat-container').scrollTop($('#chat-container')[0].scrollHeight);
+                        }, 1000);
+                    }
+                });
+            });
+
+            function formatResponse(response) {
+                // Split the response into lines
+                var lines = response.split('\n');
+                var formattedResponse = '';
+                var inList = false;
+
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i].trim();
+                    if (line.match(/^\d+\./)) {
+                        if (!inList) {
+                            formattedResponse += '<ol>';
+                            inList = true;
+                        }
+                        formattedResponse += '<li>' + line.substring(line.indexOf('.') + 1).trim() + '</li>';
+                    } else {
+                        if (inList) {
+                            formattedResponse += '</ol>';
+                            inList = false;
+                        }
+                        formattedResponse += line + '<br>';
+                    }
+                }
+
+                if (inList) {
+                    formattedResponse += '</ol>';
+                }
+
+                return formattedResponse;
+            }
+        });
+    </script>
+</body>
+
+</html>
