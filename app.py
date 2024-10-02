@@ -1,29 +1,33 @@
-from flask import Flask, render_template, request, jsonify
+import streamlit as st
 import google.generativeai as genai
-import os
 from datetime import datetime
 
-app = Flask(__name__)
-
 # Configure the Gemini API
-api_key = os.environ.get("GOOGLE_API_KEY")
+api_key = st.secrets["GOOGLE_API_KEY"]
 if not api_key:
-    raise ValueError("The GOOGLE_API_KEY environment variable is not set.")
+    raise ValueError("The GOOGLE_API_KEY secret is not set.")
 
 genai.configure(api_key=api_key)
 
-chat_history = []
+# Initialize chat history
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html', chat_history=chat_history)
+st.title("Mental Health Chatbot")
 
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    user_input = request.json['user_input']
+# Display chat history
+for message in st.session_state.chat_history:
+    with st.chat_message(message["role"]):
+        st.write(f"{message['timestamp']}: {message['content']}")
+
+# User input
+user_input = st.chat_input("What's on your mind?")
+
+if user_input:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    chat_history.append({"role": "user", "content": user_input, "timestamp": timestamp})
+    # Add user message to chat history
+    st.session_state.chat_history.append({"role": "user", "content": user_input, "timestamp": timestamp})
     
     # Generate AI response using Gemini API
     model = genai.GenerativeModel('gemini-pro')
@@ -41,9 +45,14 @@ def send_message():
     response = model.generate_content(prompt)
     ai_response = response.text
     
-    chat_history.append({"role": "ai", "content": ai_response, "timestamp": timestamp})
+    # Add AI response to chat history
+    st.session_state.chat_history.append({"role": "ai", "content": ai_response, "timestamp": timestamp})
     
-    return jsonify({"ai_response": ai_response, "timestamp": timestamp})
+    # Display the AI response
+    with st.chat_message("ai"):
+        st.write(f"{timestamp}: {ai_response}")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Optional: Add a button to clear chat history
+if st.button("Clear Chat History"):
+    st.session_state.chat_history = []
+    st.experimental_rerun()
