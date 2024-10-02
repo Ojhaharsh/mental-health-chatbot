@@ -1,11 +1,13 @@
 import streamlit as st
+import os
 import google.generativeai as genai
 from datetime import datetime
 
 # Configure the Gemini API
-api_key = st.secrets["GOOGLE_API_KEY"]
+api_key = st.secrets.get("GOOGLE_API_KEY") or os.environ.get("GOOGLE_API_KEY")
 if not api_key:
-    raise ValueError("The GOOGLE_API_KEY secret is not set.")
+    st.error("The GOOGLE_API_KEY is not set in secrets or environment variables.")
+    st.stop()
 
 genai.configure(api_key=api_key)
 
