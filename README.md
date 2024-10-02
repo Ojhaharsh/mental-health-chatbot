@@ -12,10 +12,10 @@ A simple web-based chatbot application focused on mental health support, built w
 mental-health-chatbot/
 │
 ├── static/
-│   └── styles.css
+│ └── styles.css
 │
 ├── templates/
-│   └── index.html
+│ └── index.html
 │
 ├── .gitignore
 ├── app.py
