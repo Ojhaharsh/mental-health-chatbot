@@ -75,23 +75,23 @@ footer = """
         position: fixed;
         right: 0;
         bottom: 0;
-        margin: 10px;
-        padding: 5px 10px;
+        width: 100%;
         background-color: rgba(50, 50, 50, 0.5);
         color: white;
         text-align: right;
-        border-radius: 5px;
+        padding: 5px 10px;
         font-size: 12px;
-    }
-    .footer p {
-        margin: 0;
+        z-index: 1000;
     }
 </style>
-<div class="footer">
-    <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
-</div>
 """
+
 st.markdown(footer, unsafe_allow_html=True)
 
-# Ensure the footer is visible by adding some space
+# Use columns to create space and position the footer text
+col1, col2, col3 = st.columns([1,1,1])
+with col3:
+    st.markdown('<div class="footer">Made with ❤️ by <strong>BuilderBabu</strong></div>', unsafe_allow_html=True)
+
+# Ensure there's space at the bottom of the page
 st.markdown("<br><br><br>", unsafe_allow_html=True)
