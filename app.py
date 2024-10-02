@@ -72,18 +72,19 @@ if st.button("Clear Chat History"):
 footer = """
 <style>
     .footer {
-        position: relative;
-        left: 0;
+        position: fixed;
+        right: 0;
         bottom: 0;
-        width: 100%;
-        background-color: white;
-        color: black;
-        text-align: center;
-        padding: 10px;
-        margin-top: 30px;
+        margin: 10px;
+        padding: 5px 10px;
+        background-color: rgba(50, 50, 50, 0.5);
+        color: white;
+        text-align: right;
+        border-radius: 5px;
+        font-size: 12px;
     }
     .footer p {
-        margin-bottom: 0;
+        margin: 0;
     }
 </style>
 <div class="footer">
