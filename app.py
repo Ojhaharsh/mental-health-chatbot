@@ -11,11 +11,17 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
+# GitHub repository URL
+github_url = "https://github.com/Ojhaharsh/mental-health-chatbot"
+
+# Add "Star on GitHub" button
+st.markdown(f"[![Star on GitHub](https://img.shields.io/github/stars/Ojhaharsh/mental-health-chatbot.svg?style=social)]({github_url})")
+
+st.title("Mental Health Chatbot")
+
 # Initialize chat history
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-
-st.title("Mental Health Chatbot")
 
 # Display chat history
 for message in st.session_state.chat_history:
