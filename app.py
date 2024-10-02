@@ -68,26 +68,26 @@ if st.button("Clear Chat History"):
     st.session_state.chat_history = []
     st.rerun()
 
-# Add some space before the footer
-st.markdown("<br><br>", unsafe_allow_html=True)
-
-# Add the footer
-st.markdown(
-       """
-       <style>
-       .footer {
-           position: fixed;
-           left: 0;
-           bottom: 0;
-           width: 100%;
-           background-color: white;
-           color: black;
-           text-align: center;
-       }
-       </style>
-       <div class="footer">
-           <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
-       </div>
-       """,
-       unsafe_allow_html=True
-   )
+# Add footer
+footer = """
+<style>
+    .footer {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: white;
+        color: black;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+    }
+    .footer p {
+        margin-bottom: 0;
+    }
+</style>
+<div class="footer">
+    <p>Made with ❤️ by <strong>BuilderBabu</strong></p>
+</div>
+"""
+st.markdown(footer, unsafe_allow_html=True)
