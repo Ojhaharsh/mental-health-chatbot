@@ -14,8 +14,23 @@ genai.configure(api_key=api_key)
 # GitHub repository URL
 github_url = "https://github.com/Ojhaharsh/mental-health-chatbot"
 
-# Add "Star on GitHub" button
-st.markdown(f"[![Star on GitHub](https://img.shields.io/github/stars/Ojhaharsh/mental-health-chatbot.svg?style=social)]({github_url})")
+# Create two columns for the top section
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    # Add "Star on GitHub" button
+    st.markdown(f"[![Star on GitHub](https://img.shields.io/github/stars/Ojhaharsh/mental-health-chatbot.svg?style=social)]({github_url})")
+
+with col2:
+    # Add the footer right beneath the star button
+    st.markdown(
+        """
+        <div style="font-size: 0.8em; text-align: right;">
+        Made with ❤️ by <strong>BuilderBabu</strong>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 st.title("Mental Health Chatbot")
 
@@ -68,30 +83,3 @@ if st.button("Clear Chat History"):
     st.session_state.chat_history = []
     st.rerun()
 
-# Add footer
-footer = """
-<style>
-    .footer {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: rgba(50, 50, 50, 0.5);
-        color: white;
-        text-align: right;
-        padding: 5px 10px;
-        font-size: 12px;
-        z-index: 1000;
-    }
-</style>
-"""
-
-st.markdown(footer, unsafe_allow_html=True)
-
-# Use columns to create space and position the footer text
-col1, col2, col3 = st.columns([1,1,1])
-with col3:
-    st.markdown('<div class="footer">Made with ❤️ by <strong>BuilderBabu</strong></div>', unsafe_allow_html=True)
-
-# Ensure there's space at the bottom of the page
-st.markdown("<br><br><br>", unsafe_allow_html=True)
