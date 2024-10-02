@@ -92,3 +92,6 @@ footer = """
 </div>
 """
 st.markdown(footer, unsafe_allow_html=True)
+
+# Ensure the footer is visible by adding some space
+st.markdown("<br><br><br>", unsafe_allow_html=True)
